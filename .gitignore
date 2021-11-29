@@ -29,7 +29,8 @@ __pycache__
 .coverage
 .pytest_cache
 src
-
+*.csv
+.csv
 *.swp
 *.map
 .idea/
