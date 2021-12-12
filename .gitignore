@@ -130,3 +130,5 @@ Vagrantfile
 .csv
 .parquet
 .pickle
+models/
+data/
