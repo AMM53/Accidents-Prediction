@@ -129,3 +129,4 @@ pyenv
 Vagrantfile
 .csv
 .parquet
+.pickle
