@@ -86,7 +86,7 @@ def cargar_modelo(ruta):
 
 
 ### Función agregadora de Métricas, Matriz de confusión, curva ROC y threshold óptimo
-def model_analysis(modelo):
+def model_analysis(modelo, xtest, ytest):
     matplotlib.rcParams['figure.figsize'] = (9, 9)
     ypred = modelo.predict(xtest)
     ypred_proba = modelo.predict_proba(xtest)
