@@ -75,7 +75,7 @@ Objective was to develop a prediction analysis based on machine learning models 
 ### Prerequisites
 
 * Python 3.8.12
-* Wanting to learn something new (just like we did!)
+* Wanting to learn something new (just like we did! and still do)
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -83,10 +83,10 @@ Objective was to develop a prediction analysis based on machine learning models 
 - [X] EDA
 - [X] Feature Engineering
 - [X] Models
-    - [] Model Optimization
-    - [] Pipeline for preprocessing
+    - [X] Model Optimization
+    - [X] Pipeline for preprocessing
 - [X] Interpretability
-- [] English translation
+- English translation
 
 See the [open issues](https://github.com/AMM53/ProyectoML/issues) for a full list of proposed features (and known issues).
 
