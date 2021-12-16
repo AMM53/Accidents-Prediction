@@ -1,4 +1,4 @@
-[![LinkedIn][linkedin-shield]][https://www.linkedin.com/in/andresmahia/]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- PROJECT LOGO -->
 <br />
