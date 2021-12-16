@@ -1,10 +1,4 @@
-<div id="top"></div>
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+[![LinkedIn][linkedin-shield]][https://www.linkedin.com/in/andresmahia/]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -129,7 +123,6 @@ Project Link: [https://github.com/AMM53/ProyectoML](https://github.com/AMM53/Pro
 ## Acknowledgments
 
 * []()Antonio Tello Gómez for working as hard on this project as I did
-* 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -149,3 +142,4 @@ Project Link: [https://github.com/AMM53/ProyectoML](https://github.com/AMM53/Pro
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/andresmahia
 [product-screenshot]: https://www.ctvnews.ca/polopoly_fs/1.4697281.1574439412!/httpImage/image.png_gen/derivatives/landscape_960/image.png
+
