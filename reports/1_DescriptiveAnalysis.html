@@ -17252,7 +17252,7 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>La finalidad de esta practica es desarrollar el ciclo completo de un modelo de Machine Learning aplicando los conocimientos adquiridos en la asignatura. Para ello empleamos la National Collision Database (NCDB), una base de datos que contiene información sobre accidentes de vehículos en Canada. En primer lugar analizaremos los datos, luego haremos las transformaciones necesarias y evaluaremos distintos modelos para ver el que mejor se ajusta a nuestro problema, por último se realizará la puesta en producción del modelo a través de Flask. El objetivo principal es perdecir si dado un accidente, este ha sido mortal o no a través de un modelo de clasificación. Aunque también nos interesa saber que factores influyen más en la fatalidad de los accidentes y qué tipo de vehículos y conductores son más propensos a tener accidentes.</p>
+<p>La finalidad de esta práctica es desarrollar el ciclo completo de un modelo de Machine Learning aplicando los conocimientos adquiridos en la asignatura. Para ello empleamos la National Collision Database (NCDB), una base de datos que contiene información sobre accidentes de vehículos en Canada. En primer lugar, analizaremos los datos, luego haremos las transformaciones necesarias y evaluaremos distintos modelos para ver el que mejor se ajusta a nuestro problema y, por último, se realizará la puesta en producción del modelo a través de Flask. Nuestro punto de vista será el de una compañía de seguros que deberá inmovilizar una gran cantidad de capital en caso de que uno de sus asegurados se vea involucrado en un accidente fatal. El objetivo principal es predecir si dado un accidente, este ha sido mortal o no a través de un modelo de clasificación. Aunque también nos interesa saber qué factores influyen más en la fatalidad de los accidentes y qué tipo de vehículos y conductores son más propensos a tener accidentes (acción correctiva en prima).</p>
 
 </div>
 </div>
@@ -17263,13 +17263,13 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>La NCDB es una base de datos proporcionada por el gobierno de Cánada que contiene todas las colisiones de vehículos reportadas por la policía a nivel nacional para el periodo de 1994-2014. El conjunto de datos incluye variables acerca del vehiculo, de sus ocupantes y caracteristicas del accidente como lugar condciones climaticas, etc. Todas las variables incluidas son categóricas.</p>
-<p>Uno de los problemas fundamentales de nuestro conjunto de datos es que mezcla varios niveles de los datos en la misma tabla. En concreto, mezcla tres niveles, el de accidente, el de vehículo y el de persona. Cada fila de los datos es una persona que comparte los mismos registros a nivel de vehículo con el resto de ocupantes y a nivel de accidentes con el resto de involucrados en el accidente.
-Por ejemplo, tenemos un accidente con tres vehículos y dos personas por vehículo. En nuestros datos tendremos seis filas de nuestro dataset idénticas en cuanto a las características del accidente y tres pares de filas idénticas en cuanto a características de vehículo y accidente. Esto es problemático porque estamos tratando de predecir a nivel de accidente y no de persona. En el ejemplo anterior si en la colisión hubiera fallecido una persona tendríamos seis filas casi identicas que indicarían fallecimiento en la variable objetivo. 
-Esto para el análisis descriptivo no tiene demasiada importancia. Sin embargo, a la hora de estimar un modelo debemos transformar el dataset agregando por vehículo o por accidente para no introducir sesgo. Como inconveniente perderemos información a nivel de pasajeros.</p>
-<p>Fuente:<br>
-<a href="https://www.kaggle.com/tbsteal/canadian-car-accidents-19942014">https://www.kaggle.com/tbsteal/canadian-car-accidents-19942014</a><br>
-<a href="https://open.canada.ca/data/en/dataset/1eb9eba7-71d1-4b30-9fb1-30cbdab7e63a">https://open.canada.ca/data/en/dataset/1eb9eba7-71d1-4b30-9fb1-30cbdab7e63a</a></p>
+<p>La NCDB es una base de datos proporcionada por el gobierno de Canadá que contiene todas las colisiones de vehículos reportadas por la policía a nivel nacional para el periodo de 1994-2014. El conjunto de datos incluye variables acerca del vehículo, de sus ocupantes y características del accidente como lugar condiciones climáticas, etc. Todas las variables incluidas son categóricas. 
+Uno de los problemas fundamentales de nuestro conjunto de datos es que mezcla varios niveles de los datos en la misma tabla. En concreto, mezcla tres niveles, el de accidente, el de vehículo y el de persona. Cada fila de los datos es una persona que comparte los mismos registros a nivel de vehículo con el resto de ocupantes y a nivel de accidentes con el resto de involucrados en el accidente.
+Por ejemplo, tenemos un accidente con tres vehículos y dos personas por vehículo. En nuestros datos tendremos seis filas idénticas en cuanto a las características del accidente y tres pares de filas idénticas en cuanto a características de vehículo y accidente. Esto es problemático porque estamos tratando de predecir a nivel de accidente y no de persona. En el ejemplo anterior si en la colisión hubiera fallecido una persona tendríamos seis filas casi idénticas que indicarían fallecimiento en la variable objetivo. 
+Esto para el análisis descriptivo no tiene demasiada importancia. Sin embargo, a la hora de estimar un modelo debemos transformar el dataset para no introducir sesgo. Como inconveniente perderemos información a nivel de pasajeros.</p>
+<p>Fuente de los datos:</p>
+<p><a href="https://www.kaggle.com/tbsteal/canadian-car-accidents-19942014">https://www.kaggle.com/tbsteal/canadian-car-accidents-19942014</a></p>
+<p><a href="https://open.canada.ca/data/en/dataset/1eb9eba7-71d1-4b30-9fb1-30cbdab7e63a">https://open.canada.ca/data/en/dataset/1eb9eba7-71d1-4b30-9fb1-30cbdab7e63a</a></p>
 
 </div>
 </div>
@@ -17650,7 +17650,8 @@ dtype: object</pre>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Eliminar-Variables-y-Duplicados">Eliminar Variables y Duplicados<a class="anchor-link" href="#Eliminar-Variables-y-Duplicados">&#182;</a></h3><p>Prescindimos de la variables _'passenger<em>fatality'</em> y _'passenger<em>id'</em>.  _'passenger<em>fatality'</em> no la podemos emplear como input de nuestro modelo por que es precisamente lo que intentamos predecir pero a nivel de pasajero</p>
+<h3 id="Eliminar-Variables-y-Duplicados">Eliminar Variables y Duplicados<a class="anchor-link" href="#Eliminar-Variables-y-Duplicados">&#182;</a></h3><p>Prescindimos de la variables _'passenger<em>fatality'</em>, _'passenger<em>id'</em> y _'vehicle<em>id'</em>.<br>
+_'passenger<em>fatality'</em> no la podemos emplear como input de nuestro modelo porque es precisamente lo que intentamos predecir, pero a nivel de pasajero.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -17749,7 +17750,7 @@ dtype: object</pre>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Plot variable &#39;fatality. Podemos ver que el dataset está muy desbalanceado</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Plot variable &#39;fatality&#39;</span>
 <span class="n">fatality_per</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fatality&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;percent&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 <span class="n">fatality_count</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fatality&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 <span class="n">fataity_merge</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">fatality_per</span><span class="p">,</span> <span class="n">fatality_count</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
@@ -17785,15 +17786,21 @@ dtype: object</pre>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Podemos ver que el dataset está muy desbalanceado en favor de la clase 0. Solo 1.7% de fatality para el conjunto de datos</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="An%C3%A1lisis-preliminar-valores-nulos">An&#225;lisis preliminar valores nulos<a class="anchor-link" href="#An%C3%A1lisis-preliminar-valores-nulos">&#182;</a></h3>
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>En el diccionario de datos encontramos varios tipos de datos ausentes.  Principalmente U, UU y UUUU que son datos estirctamente desconocidos.<br>
-Luego tenemos los X, XX y XXXX que son no proporcionados por la jurisdicción, no encontramos ningun registro con esta etiqueta en los datos.<br>
-Por otro lado tenemos los N, NN y NNNN que hacen referencia a que la variable no aplica al registro concreto. Por ejemplo en los registros creados para coches aparcados y peatones.  Más adelante decidiremos que hacer con estos registros.<br>
-Por último los Q, QQ, QQQQ que son otras opciones que no aparecen en las posibles y tampoco deben ser tratados como nulos.</p>
+<p>En el diccionario de datos encontramos varios tipos de datos ausentes.  Principalmente U, UU y UUUU que son datos estrictamente desconocidos.<br>
+Luego tenemos los X, XX y XXXX que son no proporcionados por la jurisdicción, no encontramos ningún registro con esta etiqueta en los datos.<br>
+Por otro lado, tenemos los N, NN y NNNN que hacen referencia a que la variable no aplica al registro concreto. Por ejemplo, en los registros creados para coches aparcados y peatones.  Más adelante decidiremos que hacer con estos registros.<br>
+Por último, los Q, QQ, QQQQ que son otras opciones que no aparecen en las posibles y tampoco deben ser tratados como nulos.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -18204,7 +18211,7 @@ Por último los Q, QQ, QQQQ que son otras opciones que no aparecen en las posibl
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Tras hacer el analisis de los nulos por filas y por columnas. Procedemos a eliminar los registros con más nulos. En cuanto a columnas mantenemos todas puesto que solo una de ellas supera ligeramente el 10% de nulos una cantidad razonable y puede ser una variable de interés para el modelo. En cuanto a las filas vamos a eliminar todos los registros que contengan más de un 40% de nulos, es decir, 8 o más variables con valor nulo en un solo registro.</p>
+<p>Tras hacer el análisis de los nulos por filas y por columnas. Procedemos a eliminar los registros con más nulos. En cuanto a columnas mantenemos todas puesto que solo una de ellas supera ligeramente el 10% de nulos una cantidad razonable y puede ser una variable de interés para el modelo. En cuanto a las filas vamos a eliminar todos los registros que contengan más de un 40% de nulos, es decir, 8 o más variables con valor nulo en un solo registro.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -18489,12 +18496,13 @@ Por último los Q, QQ, QQQQ que son otras opciones que no aparecen en las posibl
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Gr%C3%A1ficos">Gr&#225;ficos<a class="anchor-link" href="#Gr%C3%A1ficos">&#182;</a></h3><p>Hemos generado varias funciones que nos ayudarán a aplicar un análisis descriptivo a las variables de nuestro dataset de manera eficiente e individual.
+<h3 id="Gr%C3%A1ficos">Gr&#225;ficos<a class="anchor-link" href="#Gr%C3%A1ficos">&#182;</a></h3><p>Hemos generado varias funciones que nos ayudarán a aplicar un análisis descriptivo a las variables de nuestro dataset de manera individual.
 En concreto, hemos optado por llevar a cabo un análisis de:</p>
 <ul>
-<li>Verde azulado: La distribución de la variable objetivo en función de los valores de la variable que estamos analizando.</li>
-<li>Verde intenso: La frecuencia absoluta de los accidentes mortales (variable objetiva = 1) en función de los valores de la variable analizada.</li>
-<li>Azul: El nivel de mortalidad en función de los valores de la variable que estamos analizando. Probabilidad = $\frac{Accidentes Mortales}{Accidentes Totales}$ x 100</li>
+<li>Verde azulado: La distribución del total de los accidentes en función de los valores de la variable que estamos analizando.</li>
+<li>Verde intenso: Porcentaje de accidentes mortales en función de la variable analizada.</li>
+<li>Azul: El nivel de mortalidad sobre el total de accidentes en función de los valores de la variable que estamos analizando.<br>
+$ \frac{Accidentes Mortales}{Accidentes Totales} \cdot 100$ </li>
 </ul>
 
 </div>
@@ -19427,7 +19435,7 @@ En concreto, hemos optado por llevar a cabo un análisis de:</p>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h5 id="Conclusi%C3%B3n:">Conclusi&#243;n:<a class="anchor-link" href="#Conclusi%C3%B3n:">&#182;</a></h5><p>Observamos que a pesar de que la mayoría de los accidentes ocurren en el sentido de la marcha ($mid-block$) y en intersecciones, tienen una mortalidad relativamente baja.</p>
-<p>Cabe destacar la alta mortalidad de los accidentes en los carriles de adelantamiento y carriles VAO ($highway express lane$), que probablemente estén causados por una muestra reducida pero que aún así hemos de tener muy en cuenta.</p>
+<p>Cabe destacar la alta mortalidad de los accidentes en los carriles de adelantamiento y carriles VAO ($highway express lane$), que probablemente estén causados por una muestra reducida pero que aun así hemos de tener muy en cuenta.</p>
 
 </div>
 </div>
@@ -19682,8 +19690,8 @@ En concreto, hemos optado por llevar a cabo un análisis de:</p>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h5 id="Conclusi%C3%B3n:">Conclusi&#243;n:<a class="anchor-link" href="#Conclusi%C3%B3n:">&#182;</a></h5><p>La inmensa mayoría de accidentes se producen en condciones normales (<em>Traffic signals fully operational</em>)</p>
-<p>En cuanto a la mortalidad, parece superior en condiciones distintas a las noramles. Sin embargo, esto se puede deber a que las muestras no son del todo representativas</p>
+<h5 id="Conclusi%C3%B3n:">Conclusi&#243;n:<a class="anchor-link" href="#Conclusi%C3%B3n:">&#182;</a></h5><p>La inmensa mayoría de accidentes se producen en condiciones normales (<em>Traffic signals fully operational</em>)</p>
+<p>En cuanto a la mortalidad, parece superior en condiciones distintas a las normales. Sin embargo, esto se puede deber a que las muestras no son del todo representativas</p>
 
 </div>
 </div>
@@ -19889,7 +19897,7 @@ Sin embargo, la mortalidad es notablemente mayor en cambios de rasante y curvas.
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h5 id="Conclusi%C3%B3n:">Conclusi&#243;n:<a class="anchor-link" href="#Conclusi%C3%B3n:">&#182;</a></h5><p>La inmensa mayoría de colisiones cuentan con dos vehículos involucrados hasta el punto de que en el boxplot podemos ver que todas las colisiones que no involucran dos vehículos son considerdas outliers. Consideraremos que entre 1 y 6 vehículos involucrados estamos en un rango normal.<br>
+<h5 id="Conclusi%C3%B3n:">Conclusi&#243;n:<a class="anchor-link" href="#Conclusi%C3%B3n:">&#182;</a></h5><p>La inmensa mayoría de colisiones cuentan con dos vehículos involucrados hasta el punto de que en el boxplot podemos ver que todas las colisiones que no involucran dos vehículos son consideradas outliers. Consideraremos que entre 1 y 6 vehículos involucrados estamos en un rango normal.<br>
 En cuanto a mortalidad, podemos apreciar como la mortalidad en accidentes individuales es notablemente superior a la de dos vehículos</p>
 
 </div>
@@ -19996,7 +20004,7 @@ Sin embargo, la mortalidad parece superior en otros tipos de vehículos, aunque 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Hemos sustituido la variable _vehicle<em>year</em> por  _vehicle<em>age</em>, ya que consideramos que la antigüedad del vehículo resulta determinante a la hora de estimar el riesgo mortal en un accidente.</p>
-<p>Hemos hecho esto por que la variable _vehicle<em>year</em> y su consecuente tendencia a reducir el riesgo mortal cuanto más moderno es el vehículo ya será reflejada en nuestro modelo mediante la variable year, como pudimos observar en el análisis inicial de la variable objetivo.</p>
+<p>Hemos hecho esto porque la variable _vehicle<em>year</em> y su consecuente tendencia a reducir el riesgo mortal cuanto más moderno es el vehículo ya será reflejada en nuestro modelo mediante la variable year, como pudimos observar en el análisis inicial de la variable objetivo.</p>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -20112,7 +20120,7 @@ Sin embargo, la mortalidad parece superior en otros tipos de vehículos, aunque 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Conclusi%C3%B3n:">Conclusi&#243;n:<a class="anchor-link" href="#Conclusi%C3%B3n:">&#182;</a></h3><p>Podemos observar cómo la mortalidad por accidente no aumenta demasiado según aumenta la antigüedad del vehículo, como hubiera sido de esperar.<br>
-También vemos como la distiubción de la variable presenta una asimetría a la derecha y que está marcada por la presencia de outliers tal como muestra el boxplot. Esto tiene una explicación muy sencilla, la inmensa mayoria de vehiculos en circulación no supera los 25 años. Sin embargo, existen vehículos de colección y antiguedades que circulan muy poco y que también pueden verse involucrados en un accidente.</p>
+También vemos como la distribución de la variable presenta una asimetría a la derecha y que está marcada por la presencia de outliers tal como muestra el boxplot. Esto tiene una explicación muy sencilla, la inmensa mayoría de vehículos en circulación no supera los 25 años. Sin embargo, existen vehículos de colección y antigüedades que circulan muy poco y que también pueden verse involucrados en un accidente.</p>
 
 </div>
 </div>
@@ -20124,12 +20132,6 @@ También vemos como la distiubción de la variable presenta una asimetría a la 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="5.1.-Driver-Sex">5.1. Driver Sex<a class="anchor-link" href="#5.1.-Driver-Sex">&#182;</a></h4>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Realizamos cierto tratamiento de los datos para la variable sexo que posteriormente será útil.</p>
-
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -20303,7 +20305,7 @@ También vemos como la distiubción de la variable presenta una asimetría a la 
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h5 id="Conclusi%C3%B3n:">Conclusi&#243;n:<a class="anchor-link" href="#Conclusi%C3%B3n:">&#182;</a></h5><p>La edad de los pasajeros está distribuida de una manera mucho más uniforme que otras variables. El grupo de los jovenes entre 17 y 25 años es el más representativo del total de pasajeros. Sin embargo, no vemos una mortalidad superior en este grupo. Si que vemos que la mortalidad aumenta en edades avanzadas, de los 65 en adelante, aunque también aquí se reduce la muestra.</p>
+<h5 id="Conclusi%C3%B3n:">Conclusi&#243;n:<a class="anchor-link" href="#Conclusi%C3%B3n:">&#182;</a></h5><p>La edad de los pasajeros está distribuida de una manera mucho más uniforme que otras variables. El grupo de los jóvenes entre 17 y 25 años es el más representativo del total de pasajeros. Sin embargo, no vemos una mortalidad superior en este grupo. Si que vemos que la mortalidad aumenta en edades avanzadas, de los 65 en adelante, aunque también aquí se reduce la muestra.</p>
 
 </div>
 </div>
@@ -20510,8 +20512,7 @@ Cabe mencionar la alta mortalidad de los usuarios que utilizan casco, posiblemen
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># SLOW!!! + 5mins</span>
-<span class="c1"># Matriz con valores de la V de Cramer</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Matriz con valores de la V de Cramer</span>
 <span class="n">rows</span><span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">var1</span> <span class="ow">in</span> <span class="n">categoricas_pre</span><span class="p">:</span>
   <span class="n">col</span> <span class="o">=</span> <span class="p">[]</span>

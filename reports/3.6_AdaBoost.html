@@ -17233,7 +17233,7 @@ a.anchor-link {
 </ul>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
@@ -17256,18 +17256,40 @@ a.anchor-link {
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">ConfusionMatrixDisplay</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">AdaBoostClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
 
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 <span class="o">%</span><span class="k">load_ext</span> autotime
 
-<span class="kn">from</span> <span class="nn">aux_func</span> <span class="kn">import</span> <span class="n">evaluate_model</span>
+<span class="kn">from</span> <span class="nn">aux_func</span> <span class="kn">import</span> <span class="n">evaluate_model</span><span class="p">,</span> <span class="n">cargar_modelo</span>
 </pre></div>
 
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 531 ms (started: 2021-12-18 19:17:23 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -17299,7 +17321,43 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 375 ms (started: 2021-12-12 22:51:34 +01:00)
+<pre>time: 1.69 s (started: 2021-12-18 19:17:24 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Cargamos pipeline preprocesado</span>
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">cargar_modelo</span><span class="p">(</span><span class="s1">&#39;../models/preprocessor.pickle&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 141 ms (started: 2021-12-18 19:18:07 +01:00)
 </pre>
 </div>
 </div>
@@ -17327,8 +17385,44 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">AdaBoostClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;preprocesador&#39;</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;clasificador&#39;</span><span class="p">,</span> <span class="n">AdaBoostClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 0 ns (started: 2021-12-18 19:18:10 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17350,7 +17444,38 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>AdaBoostClassifier(n_estimators=100, random_state=0)</pre>
+<pre>Pipeline(steps=[(&#39;preprocesador&#39;,
+                 ColumnTransformer(transformers=[(&#39;num&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(strategy=&#39;median&#39;)),
+                                                                  (&#39;scaler&#39;,
+                                                                   StandardScaler())]),
+                                                  [&#39;vehicle_age&#39;,
+                                                   &#39;passenger_age&#39;,
+                                                   &#39;vehicles_involved&#39;,
+                                                   &#39;year&#39;]),
+                                                 (&#39;fcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=nan,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;onehot&#39;,
+                                                                   OneHotEncoder(handle_unknown=&#39;i...
+                                                   &#39;passenger_type&#39;]),
+                                                 (&#39;mcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=&#39;missing&#39;,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;target&#39;,
+                                                                   TargetEncoder(handle_unknown=&#39;ignore&#39;))]),
+                                                  [&#39;crash_type&#39;, &#39;crash_place&#39;,
+                                                   &#39;crash_weather&#39;,
+                                                   &#39;surface_state&#39;,
+                                                   &#39;road_slope&#39;,
+                                                   &#39;traffic_state&#39;,
+                                                   &#39;vehicle_type&#39;,
+                                                   &#39;passenger_safety&#39;])])),
+                (&#39;clasificador&#39;,
+                 AdaBoostClassifier(n_estimators=100, random_state=0))])</pre>
 </div>
 
 </div>
@@ -17362,7 +17487,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 9min 22s (started: 2021-12-12 22:51:35 +01:00)
+<pre>time: 11min 22s (started: 2021-12-18 19:18:14 +01:00)
 </pre>
 </div>
 </div>
@@ -17398,7 +17523,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 16 ms (started: 2021-12-12 23:00:58 +01:00)
+<pre>time: 15 ms (started: 2021-12-18 19:29:37 +01:00)
 </pre>
 </div>
 </div>
@@ -17435,7 +17560,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 15 ms (started: 2021-12-12 23:00:58 +01:00)
+<pre>time: 15 ms (started: 2021-12-18 19:29:37 +01:00)
 </pre>
 </div>
 </div>
@@ -17478,21 +17603,25 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>ROC-AUC score of the model: 0.8292701921721066
-Accuracy of the model: 0.9845652876974086
+<pre>ROC-AUC score of the model: 0.8252876879924893
+Accuracy of the model: 0.9848369379873115
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       0.98      1.00      0.99    797650
-           1       0.44      0.01      0.02     12472
+           0       0.98      1.00      0.99    799946
+           1       0.43      0.01      0.01     12291
 
-    accuracy                           0.98    810122
-   macro avg       0.71      0.50      0.51    810122
-weighted avg       0.98      0.98      0.98    810122
+    accuracy                           0.98    812237
+   macro avg       0.71      0.50      0.50    812237
+weighted avg       0.98      0.98      0.98    812237
 
 
-time: 29.4 s (started: 2021-12-12 23:00:58 +01:00)
+Confusion matrix: 
+[[799841    105]
+ [ 12211     80]]
+
+time: 38.5 s (started: 2021-12-18 19:29:37 +01:00)
 </pre>
 </div>
 </div>
@@ -17549,22 +17678,26 @@ time: 29.4 s (started: 2021-12-12 23:00:58 +01:00)
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Best Threshold=0.489303, G-Mean=0.746
-ROC-AUC score of the model: 0.8292701921721066
-Accuracy of the model: 0.7428572486613128
+<pre>Best Threshold=0.489326, G-Mean=0.743
+ROC-AUC score of the model: 0.8252876879924893
+Accuracy of the model: 0.7402199111835585
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       0.99      0.74      0.85    797650
-           1       0.04      0.75      0.08     12472
+           0       0.99      0.74      0.85    799946
+           1       0.04      0.75      0.08     12291
 
-    accuracy                           0.74    810122
-   macro avg       0.52      0.75      0.47    810122
-weighted avg       0.98      0.74      0.84    810122
+    accuracy                           0.74    812237
+   macro avg       0.52      0.74      0.46    812237
+weighted avg       0.98      0.74      0.84    812237
 
 
-time: 1.56 s (started: 2021-12-12 23:01:27 +01:00)
+Confusion matrix: 
+[[592068 207878]
+ [  3125   9166]]
+
+time: 1.58 s (started: 2021-12-18 19:30:16 +01:00)
 </pre>
 </div>
 </div>
@@ -17630,22 +17763,26 @@ time: 1.56 s (started: 2021-12-12 23:01:27 +01:00)
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Best Threshold=0.489399, G-Mean=0.746
-ROC-AUC score of the model: 0.8279357331624063
-Accuracy of the model: 0.7516188919693577
+<pre>Best Threshold=0.489563, G-Mean=0.743
+ROC-AUC score of the model: 0.8266178973156888
+Accuracy of the model: 0.763296393136849
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       0.99      0.75      0.86   3192113
-           1       0.04      0.74      0.08     48375
+           0       0.99      0.76      0.86   3200049
+           1       0.04      0.72      0.08     48896
 
-    accuracy                           0.75   3240488
-   macro avg       0.52      0.75      0.47   3240488
-weighted avg       0.98      0.75      0.84   3240488
+    accuracy                           0.76   3248945
+   macro avg       0.52      0.74      0.47   3248945
+weighted avg       0.98      0.76      0.85   3248945
 
 
-time: 2min 10s (started: 2021-12-12 23:01:29 +01:00)
+Confusion matrix: 
+[[2444531  755518]
+ [  13519   35377]]
+
+time: 2min 56s (started: 2021-12-18 19:30:18 +01:00)
 </pre>
 </div>
 </div>

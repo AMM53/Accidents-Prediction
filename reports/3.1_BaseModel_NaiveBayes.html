@@ -17249,7 +17249,7 @@ a.anchor-link {
 <p>En este apartado construimos el modelo base que nos servirá como referencia para comprobar el desempeño del resto de modelos. Por otro lado, también vamos entrenar un modelo Naive Bayes otro modelo sencillo que también nos servirá como referencia.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
@@ -17272,68 +17272,16 @@ a.anchor-link {
 <span class="kn">from</span> <span class="nn">sklearn.dummy</span> <span class="kn">import</span> <span class="n">DummyClassifier</span> 
 <span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
 
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <span class="n">ColumnTransformer</span>
+
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-</pre></div>
+<span class="o">%</span><span class="k">load_ext</span> autotime
 
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">aux_func</span> <span class="kn">import</span> <span class="n">evaluate_model</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xtrain</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/xtrain.parquet&quot;</span><span class="p">)</span>
-<span class="n">ytrain</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/ytrain.parquet&quot;</span><span class="p">)</span>
-<span class="n">xtest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/xtest.parquet&quot;</span><span class="p">)</span>
-<span class="n">ytest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/ytest.parquet&quot;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Modelo-Base">Modelo Base<a class="anchor-link" href="#Modelo-Base">&#182;</a></h1>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Un modelo base emplea un valor fijo o valores aleatorios (Normalmente en función de algún estadistico de la distribución de la variable objetivo) para realizar la predicción de los valores del test. 
-En nuestro caso hemos empleado la opción 'stratified' que genera predicciones aleatorias respetando la distribución de la variable objetivo.</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
-<span class="n">modelo_base</span> <span class="o">=</span> <span class="n">DummyClassifier</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;stratified&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">modelo_base</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">aux_func</span> <span class="kn">import</span> <span class="n">evaluate_model</span>
+<span class="kn">from</span> <span class="nn">aux_func</span> <span class="kn">import</span> <span class="n">cargar_modelo</span>
 </pre></div>
 
      </div>
@@ -17353,10 +17301,156 @@ En nuestro caso hemos empleado la opción 'stratified' que genera predicciones a
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Wall time: 395 ms
+<pre>time: 0 ns (started: 2021-12-18 20:07:20 +01:00)
 </pre>
 </div>
 </div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xtrain</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/xtrain.parquet&quot;</span><span class="p">)</span>
+<span class="n">ytrain</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/ytrain.parquet&quot;</span><span class="p">)</span>
+<span class="n">xtest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/xtest.parquet&quot;</span><span class="p">)</span>
+<span class="n">ytest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/ytest.parquet&quot;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 1.67 s (started: 2021-12-18 20:07:22 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Cargamos pipeline preprocesado</span>
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">cargar_modelo</span><span class="p">(</span><span class="s1">&#39;../models/preprocessor.pickle&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 16 ms (started: 2021-12-18 20:07:24 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Modelo-Base">Modelo Base<a class="anchor-link" href="#Modelo-Base">&#182;</a></h1>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Un modelo base emplea un valor fijo o valores aleatorios (Normalmente en función de algún estadístico de la distribución de la variable objetivo) para realizar la predicción de los valores del test. 
+En nuestro caso hemos empleado la opción 'stratified' que genera predicciones aleatorias respetando la distribución de la variable objetivo.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">modelo_base</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;preprocesador&#39;</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;clasificador&#39;</span><span class="p">,</span> <span class="n">DummyClassifier</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;stratified&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 0 ns (started: 2021-12-18 20:08:05 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">modelo_base</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
 
 <div class="jp-OutputArea-child">
 
@@ -17367,16 +17461,59 @@ En nuestro caso hemos empleado la opción 'stratified' que genera predicciones a
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>DummyClassifier(random_state=0, strategy=&#39;stratified&#39;)</pre>
+<pre>Pipeline(steps=[(&#39;preprocesador&#39;,
+                 ColumnTransformer(transformers=[(&#39;num&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(strategy=&#39;median&#39;)),
+                                                                  (&#39;scaler&#39;,
+                                                                   StandardScaler())]),
+                                                  [&#39;vehicle_age&#39;,
+                                                   &#39;passenger_age&#39;,
+                                                   &#39;vehicles_involved&#39;,
+                                                   &#39;year&#39;]),
+                                                 (&#39;fcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=nan,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;onehot&#39;,
+                                                                   OneHotEncoder(handle_unknown=&#39;i...
+                                                   &#39;passenger_type&#39;]),
+                                                 (&#39;mcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=&#39;missing&#39;,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;target&#39;,
+                                                                   TargetEncoder(handle_unknown=&#39;ignore&#39;))]),
+                                                  [&#39;crash_type&#39;, &#39;crash_place&#39;,
+                                                   &#39;crash_weather&#39;,
+                                                   &#39;surface_state&#39;,
+                                                   &#39;road_slope&#39;,
+                                                   &#39;traffic_state&#39;,
+                                                   &#39;vehicle_type&#39;,
+                                                   &#39;passenger_safety&#39;])])),
+                (&#39;clasificador&#39;,
+                 DummyClassifier(random_state=0, strategy=&#39;stratified&#39;))])</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 25.8 s (started: 2021-12-18 20:08:07 +01:00)
+</pre>
+</div>
 </div>
 
 </div>
 
 </div>
 
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
@@ -17391,20 +17528,105 @@ En nuestro caso hemos empleado la opción 'stratified' que genera predicciones a
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 0 ns (started: 2021-12-18 20:08:33 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Para no tener que ejecutar, saltarse el fit y ejecutar a partir de aquí</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;../models/modelo_base.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">clf</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cargar_modelo</span><span class="p">(</span><span class="s1">&#39;../models/modelo_base.pickle&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[&nbsp;]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Pipeline(steps=[(&#39;preprocesador&#39;,
+                 ColumnTransformer(transformers=[(&#39;num&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(strategy=&#39;median&#39;)),
+                                                                  (&#39;scaler&#39;,
+                                                                   StandardScaler())]),
+                                                  [&#39;vehicle_age&#39;,
+                                                   &#39;passenger_age&#39;,
+                                                   &#39;vehicles_involved&#39;,
+                                                   &#39;year&#39;]),
+                                                 (&#39;fcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=nan,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;onehot&#39;,
+                                                                   OneHotEncoder(handle_unknown=&#39;i...
+                                                   &#39;passenger_type&#39;]),
+                                                 (&#39;mcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=&#39;missing&#39;,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;target&#39;,
+                                                                   TargetEncoder(handle_unknown=&#39;ignore&#39;))]),
+                                                  [&#39;crash_type&#39;, &#39;crash_place&#39;,
+                                                   &#39;crash_weather&#39;,
+                                                   &#39;surface_state&#39;,
+                                                   &#39;road_slope&#39;,
+                                                   &#39;traffic_state&#39;,
+                                                   &#39;vehicle_type&#39;,
+                                                   &#39;passenger_safety&#39;])])),
+                (&#39;clasificador&#39;,
+                 DummyClassifier(random_state=0, strategy=&#39;stratified&#39;))])</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 62 ms (started: 2021-12-18 20:08:33 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -17435,24 +17657,25 @@ En nuestro caso hemos empleado la opción 'stratified' que genera predicciones a
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>ROC-AUC score of the model: 0.49958685184478924
-Accuracy of the model: 0.9702494339127026
+<pre>ROC-AUC score of the model: 0.5006305803052006
+Accuracy of the model: 0.9702512936495137
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       0.98      0.99      0.98    997197
-           1       0.01      0.01      0.01     15456
+           0       0.98      0.98      0.98    799946
+           1       0.02      0.02      0.02     12291
 
-    accuracy                           0.97   1012653
-   macro avg       0.50      0.50      0.50   1012653
-weighted avg       0.97      0.97      0.97   1012653
+    accuracy                           0.97    812237
+   macro avg       0.50      0.50      0.50    812237
+weighted avg       0.97      0.97      0.97    812237
 
 
 Confusion matrix: 
-[[982308  14889]
- [ 15238    218]]
+[[787873  12073]
+ [ 12090    201]]
 
+time: 7.19 s (started: 2021-12-18 20:08:33 +01:00)
 </pre>
 </div>
 </div>
@@ -17486,9 +17709,9 @@ Este es el modelo más sencillo que tiene en cuenta las variables predictoras po
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
-<span class="n">naive_bayes</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
-<span class="n">naive_bayes</span> <span class="o">=</span> <span class="n">naive_bayes</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">naive_bayes</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;preprocesador&#39;</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;clasificador&#39;</span><span class="p">,</span> <span class="n">GaussianNB</span><span class="p">())])</span>
 </pre></div>
 
      </div>
@@ -17508,7 +17731,7 @@ Este es el modelo más sencillo que tiene en cuenta las variables predictoras po
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Wall time: 5.49 s
+<pre>time: 0 ns (started: 2021-12-18 20:09:26 +01:00)
 </pre>
 </div>
 </div>
@@ -17517,7 +17740,88 @@ Este es el modelo más sencillo que tiene en cuenta las variables predictoras po
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">naive_bayes</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[&nbsp;]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Pipeline(steps=[(&#39;preprocesador&#39;,
+                 ColumnTransformer(transformers=[(&#39;num&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(strategy=&#39;median&#39;)),
+                                                                  (&#39;scaler&#39;,
+                                                                   StandardScaler())]),
+                                                  [&#39;vehicle_age&#39;,
+                                                   &#39;passenger_age&#39;,
+                                                   &#39;vehicles_involved&#39;,
+                                                   &#39;year&#39;]),
+                                                 (&#39;fcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=nan,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;onehot&#39;,
+                                                                   OneHotEncoder(handle_unknown=&#39;i...
+                                                   &#39;vehicles_involved&#39;,
+                                                   &#39;passenger_sex&#39;,
+                                                   &#39;passenger_type&#39;]),
+                                                 (&#39;mcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=&#39;missing&#39;,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;target&#39;,
+                                                                   TargetEncoder(handle_unknown=&#39;ignore&#39;))]),
+                                                  [&#39;crash_type&#39;, &#39;crash_place&#39;,
+                                                   &#39;crash_weather&#39;,
+                                                   &#39;surface_state&#39;,
+                                                   &#39;road_slope&#39;,
+                                                   &#39;traffic_state&#39;,
+                                                   &#39;vehicle_type&#39;,
+                                                   &#39;passenger_safety&#39;])])),
+                (&#39;clasificador&#39;, GaussianNB())])</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 27.9 s (started: 2021-12-18 20:09:35 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
@@ -17532,35 +17836,25 @@ Este es el modelo más sencillo que tiene en cuenta las variables predictoras po
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Para no tener que ejecutar, saltarse el fit y ejecutar a partir de aquí</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;../models/GNB.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">clf</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-</pre></div>
+<div class="jp-Cell-outputWrapper">
 
-     </div>
-</div>
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 0 ns (started: 2021-12-18 20:10:03 +01:00)
+</pre>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ypred</span> <span class="o">=</span> <span class="n">naive_bayes</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xtest</span><span class="p">)</span>
-<span class="n">ypred_proba</span> <span class="o">=</span> <span class="n">naive_bayes</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">xtest</span><span class="p">)</span>
-</pre></div>
+</div>
 
-     </div>
-</div>
-</div>
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -17569,7 +17863,91 @@ Este es el modelo más sencillo que tiene en cuenta las variables predictoras po
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">evaluate_model</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span><span class="n">ypred</span><span class="p">,</span><span class="n">ypred_proba</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Para no tener que ejecutar, saltarse el fit y ejecutar a partir de aquí</span>
+<span class="n">cargar_modelo</span><span class="p">(</span><span class="s1">&#39;../models/GNB.pickle&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[&nbsp;]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Pipeline(steps=[(&#39;preprocesador&#39;,
+                 ColumnTransformer(transformers=[(&#39;num&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(strategy=&#39;median&#39;)),
+                                                                  (&#39;scaler&#39;,
+                                                                   StandardScaler())]),
+                                                  [&#39;vehicle_age&#39;,
+                                                   &#39;passenger_age&#39;,
+                                                   &#39;vehicles_involved&#39;,
+                                                   &#39;year&#39;]),
+                                                 (&#39;fcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=nan,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;onehot&#39;,
+                                                                   OneHotEncoder(handle_unknown=&#39;i...
+                                                   &#39;vehicles_involved&#39;,
+                                                   &#39;passenger_sex&#39;,
+                                                   &#39;passenger_type&#39;]),
+                                                 (&#39;mcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=&#39;missing&#39;,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;target&#39;,
+                                                                   TargetEncoder(handle_unknown=&#39;ignore&#39;))]),
+                                                  [&#39;crash_type&#39;, &#39;crash_place&#39;,
+                                                   &#39;crash_weather&#39;,
+                                                   &#39;surface_state&#39;,
+                                                   &#39;road_slope&#39;,
+                                                   &#39;traffic_state&#39;,
+                                                   &#39;vehicle_type&#39;,
+                                                   &#39;passenger_safety&#39;])])),
+                (&#39;clasificador&#39;, GaussianNB())])</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 62 ms (started: 2021-12-18 20:10:03 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ypred</span> <span class="o">=</span> <span class="n">naive_bayes</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xtest</span><span class="p">)</span>
+<span class="n">ypred_proba</span> <span class="o">=</span> <span class="n">naive_bayes</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">xtest</span><span class="p">)</span>
+<span class="n">evaluate_model</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span><span class="n">ypred</span><span class="p">,</span><span class="n">ypred_proba</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17589,24 +17967,25 @@ Este es el modelo más sencillo que tiene en cuenta las variables predictoras po
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>ROC-AUC score of the model: 0.7873892350291511
-Accuracy of the model: 0.8959248627121037
+<pre>ROC-AUC score of the model: 0.6915075906932969
+Accuracy of the model: 0.8819839529595426
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       0.99      0.90      0.94    997197
-           1       0.07      0.48      0.12     15456
+           0       0.99      0.89      0.94    799946
+           1       0.03      0.24      0.06     12291
 
-    accuracy                           0.90   1012653
-   macro avg       0.53      0.69      0.53   1012653
-weighted avg       0.98      0.90      0.93   1012653
+    accuracy                           0.88    812237
+   macro avg       0.51      0.56      0.50    812237
+weighted avg       0.97      0.88      0.92    812237
 
 
 Confusion matrix: 
-[[899825  97372]
- [  8020   7436]]
+[[713478  86468]
+ [  9389   2902]]
 
+time: 8.25 s (started: 2021-12-18 20:10:23 +01:00)
 </pre>
 </div>
 </div>
@@ -17626,7 +18005,8 @@ Confusion matrix:
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># keep probabilities for the positive outcome only</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#NEW</span>
+<span class="c1"># keep probabilities for the positive outcome only</span>
 <span class="n">yhat</span> <span class="o">=</span> <span class="n">ypred_proba</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="c1"># calculate roc curves</span>
 <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">yhat</span><span class="p">)</span>
@@ -17657,25 +18037,26 @@ Confusion matrix:
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Best Threshold=0.003422, G-Mean=0.718
-ROC-AUC score of the model: 0.7873892350291511
-Accuracy of the model: 0.732287367933537
+<pre>Best Threshold=0.001171, G-Mean=0.659
+ROC-AUC score of the model: 0.6915075906932969
+Accuracy of the model: 0.6182862883616481
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       0.99      0.73      0.84    997197
-           1       0.04      0.70      0.07     15456
+           0       0.99      0.62      0.76    799946
+           1       0.03      0.70      0.05     12291
 
-    accuracy                           0.73   1012653
-   macro avg       0.52      0.72      0.46   1012653
-weighted avg       0.98      0.73      0.83   1012653
+    accuracy                           0.62    812237
+   macro avg       0.51      0.66      0.41    812237
+weighted avg       0.98      0.62      0.75    812237
 
 
 Confusion matrix: 
-[[730680 266517]
- [  4583  10873]]
+[[493556 306390]
+ [  3652   8639]]
 
+time: 1.59 s (started: 2021-12-18 20:10:38 +01:00)
 </pre>
 </div>
 </div>

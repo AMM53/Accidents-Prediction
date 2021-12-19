@@ -17256,13 +17256,13 @@ a.anchor-link {
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">ConfusionMatrixDisplay</span>
 
 <span class="kn">import</span> <span class="nn">lightgbm</span> <span class="k">as</span> <span class="nn">lgb</span>
-
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 <span class="o">%</span><span class="k">load_ext</span> autotime
 
-<span class="kn">from</span> <span class="nn">aux_func</span> <span class="kn">import</span> <span class="n">evaluate_model</span>
+<span class="kn">from</span> <span class="nn">aux_func</span> <span class="kn">import</span> <span class="n">evaluate_model</span><span class="p">,</span> <span class="n">cargar_modelo</span>
 </pre></div>
 
      </div>
@@ -17282,7 +17282,9 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 343 ms (started: 2021-12-15 19:04:42 +01:00)
+<pre>The autotime extension is already loaded. To reload it, use:
+  %reload_ext autotime
+time: 0 ns (started: 2021-12-18 19:14:34 +01:00)
 </pre>
 </div>
 </div>
@@ -17320,7 +17322,43 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 407 ms (started: 2021-12-12 23:02:00 +01:00)
+<pre>time: 1.72 s (started: 2021-12-18 19:14:20 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Cargamos pipeline preprocesado</span>
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">cargar_modelo</span><span class="p">(</span><span class="s1">&#39;../models/preprocessor.pickle&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 187 ms (started: 2021-12-18 19:14:35 +01:00)
 </pre>
 </div>
 </div>
@@ -17348,8 +17386,44 @@ A diferencia de XGBoost, utiliza aprendizaje en paralelo.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">LGBMClassifier</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;preprocesador&#39;</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;clasificador&#39;</span><span class="p">,</span> <span class="n">lgb</span><span class="o">.</span><span class="n">LGBMClassifier</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 15 ms (started: 2021-12-18 19:15:38 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17371,7 +17445,38 @@ A diferencia de XGBoost, utiliza aprendizaje en paralelo.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>LGBMClassifier(random_state=0)</pre>
+<pre>Pipeline(steps=[(&#39;preprocesador&#39;,
+                 ColumnTransformer(transformers=[(&#39;num&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(strategy=&#39;median&#39;)),
+                                                                  (&#39;scaler&#39;,
+                                                                   StandardScaler())]),
+                                                  [&#39;vehicle_age&#39;,
+                                                   &#39;passenger_age&#39;,
+                                                   &#39;vehicles_involved&#39;,
+                                                   &#39;year&#39;]),
+                                                 (&#39;fcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=nan,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;onehot&#39;,
+                                                                   OneHotEncoder(handle_unknown=&#39;i...
+                                                   &#39;passenger_sex&#39;,
+                                                   &#39;passenger_type&#39;]),
+                                                 (&#39;mcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=&#39;missing&#39;,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;target&#39;,
+                                                                   TargetEncoder(handle_unknown=&#39;ignore&#39;))]),
+                                                  [&#39;crash_type&#39;, &#39;crash_place&#39;,
+                                                   &#39;crash_weather&#39;,
+                                                   &#39;surface_state&#39;,
+                                                   &#39;road_slope&#39;,
+                                                   &#39;traffic_state&#39;,
+                                                   &#39;vehicle_type&#39;,
+                                                   &#39;passenger_safety&#39;])])),
+                (&#39;clasificador&#39;, LGBMClassifier(random_state=0))])</pre>
 </div>
 
 </div>
@@ -17383,7 +17488,7 @@ A diferencia de XGBoost, utiliza aprendizaje en paralelo.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 15.3 s (started: 2021-12-12 23:02:00 +01:00)
+<pre>time: 37.5 s (started: 2021-12-18 19:15:40 +01:00)
 </pre>
 </div>
 </div>
@@ -17419,7 +17524,7 @@ A diferencia de XGBoost, utiliza aprendizaje en paralelo.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 16 ms (started: 2021-12-12 23:02:15 +01:00)
+<pre>time: 0 ns (started: 2021-12-18 19:16:17 +01:00)
 </pre>
 </div>
 </div>
@@ -17456,7 +17561,7 @@ A diferencia de XGBoost, utiliza aprendizaje en paralelo.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 15 ms (started: 2021-12-12 23:02:16 +01:00)
+<pre>time: 16 ms (started: 2021-12-18 19:16:17 +01:00)
 </pre>
 </div>
 </div>
@@ -17499,21 +17604,25 @@ A diferencia de XGBoost, utiliza aprendizaje en paralelo.</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>ROC-AUC score of the model: 0.8485746431939847
-Accuracy of the model: 0.9845726939893004
+<pre>ROC-AUC score of the model: 0.8473477473418336
+Accuracy of the model: 0.9848270886453092
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       0.98      1.00      0.99    797650
-           1       0.45      0.01      0.02     12472
+           0       0.99      1.00      0.99    799946
+           1       0.46      0.02      0.03     12291
 
-    accuracy                           0.98    810122
-   macro avg       0.72      0.50      0.51    810122
-weighted avg       0.98      0.98      0.98    810122
+    accuracy                           0.98    812237
+   macro avg       0.72      0.51      0.51    812237
+weighted avg       0.98      0.98      0.98    812237
 
 
-time: 3.45 s (started: 2021-12-12 23:02:16 +01:00)
+Confusion matrix: 
+[[799710    236]
+ [ 12088    203]]
+
+time: 9.22 s (started: 2021-12-18 19:16:17 +01:00)
 </pre>
 </div>
 </div>
@@ -17570,22 +17679,26 @@ time: 3.45 s (started: 2021-12-12 23:02:16 +01:00)
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Best Threshold=0.014631, G-Mean=0.764
-ROC-AUC score of the model: 0.8485746431939847
-Accuracy of the model: 0.7598337040593885
+<pre>Best Threshold=0.014130, G-Mean=0.763
+ROC-AUC score of the model: 0.8473477473418336
+Accuracy of the model: 0.7555910405460475
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       1.00      0.76      0.86    797650
-           1       0.05      0.77      0.09     12472
+           0       1.00      0.76      0.86    799946
+           1       0.05      0.77      0.09     12291
 
-    accuracy                           0.76    810122
-   macro avg       0.52      0.76      0.48    810122
-weighted avg       0.98      0.76      0.85    810122
+    accuracy                           0.76    812237
+   macro avg       0.52      0.76      0.47    812237
+weighted avg       0.98      0.76      0.85    812237
 
 
-time: 1.64 s (started: 2021-12-12 23:02:19 +01:00)
+Confusion matrix: 
+[[604238 195708]
+ [  2810   9481]]
+
+time: 1.58 s (started: 2021-12-18 19:16:26 +01:00)
 </pre>
 </div>
 </div>
@@ -17652,22 +17765,26 @@ time: 1.64 s (started: 2021-12-12 23:02:19 +01:00)
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Best Threshold=0.015574, G-Mean=0.770
-ROC-AUC score of the model: 0.8550318306384617
-Accuracy of the model: 0.7749530317655859
+<pre>Best Threshold=0.014689, G-Mean=0.768
+ROC-AUC score of the model: 0.8534891520550415
+Accuracy of the model: 0.7663592335358094
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       1.00      0.78      0.87   3192113
-           1       0.05      0.76      0.09     48375
+           0       1.00      0.77      0.87   3200049
+           1       0.05      0.77      0.09     48896
 
-    accuracy                           0.77   3240488
-   macro avg       0.52      0.77      0.48   3240488
-weighted avg       0.98      0.77      0.86   3240488
+    accuracy                           0.77   3248945
+   macro avg       0.52      0.77      0.48   3248945
+weighted avg       0.98      0.77      0.85   3248945
 
 
-time: 15 s (started: 2021-12-12 23:02:21 +01:00)
+Confusion matrix: 
+[[2452206  747843]
+ [  11243   37653]]
+
+time: 37.8 s (started: 2021-12-18 19:16:28 +01:00)
 </pre>
 </div>
 </div>

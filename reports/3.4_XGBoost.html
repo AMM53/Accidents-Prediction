@@ -17254,9 +17254,10 @@ a.anchor-link {
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">plot_confusion_matrix</span>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">log_loss</span>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">ConfusionMatrixDisplay</span>
-
+<span class="kn">from</span> <span class="nn">aux_func</span> <span class="kn">import</span> <span class="n">evaluate_model</span><span class="p">,</span> <span class="n">cargar_modelo</span>
 <span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <span class="n">XGBClassifier</span>
-
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
@@ -17280,42 +17281,9 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 0 ns (started: 2021-12-12 22:59:24 +01:00)
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">aux_func</span> <span class="kn">import</span> <span class="n">evaluate_model</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 0 ns (started: 2021-12-12 22:59:24 +01:00)
+<pre>The autotime extension is already loaded. To reload it, use:
+  %reload_ext autotime
+time: 0 ns (started: 2021-12-18 18:46:33 +01:00)
 </pre>
 </div>
 </div>
@@ -17334,8 +17302,6 @@ a.anchor-link {
 <span class="n">ytrain</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/ytrain.parquet&quot;</span><span class="p">)[</span><span class="s1">&#39;fatality&#39;</span><span class="p">]</span>
 <span class="n">xtest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/xtest.parquet&quot;</span><span class="p">)</span>
 <span class="n">ytest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/ytest.parquet&quot;</span><span class="p">)[</span><span class="s1">&#39;fatality&#39;</span><span class="p">]</span>
-<span class="n">xtrain_smote</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/xtrain_smote.parquet&quot;</span><span class="p">)</span>
-<span class="n">ytrain_smote</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;../data/ytrain_smote.parquet&quot;</span><span class="p">)[</span><span class="s1">&#39;fatality&#39;</span><span class="p">]</span>
 </pre></div>
 
      </div>
@@ -17355,7 +17321,43 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 1.78 s (started: 2021-12-12 22:59:25 +01:00)
+<pre>time: 1.88 s (started: 2021-12-18 18:42:34 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Cargamos pipeline preprocesado</span>
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">cargar_modelo</span><span class="p">(</span><span class="s1">&#39;../models/preprocessor.pickle&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>time: 172 ms (started: 2021-12-18 18:42:36 +01:00)
 </pre>
 </div>
 </div>
@@ -17385,8 +17387,9 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">XGBClassifier</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;preprocesador&#39;</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;clasificador&#39;</span><span class="p">,</span> <span class="n">XGBClassifier</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
 </pre></div>
 
      </div>
@@ -17406,7 +17409,42 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[22:22:19] WARNING: D:\bld\xgboost-split_1637426510059\work\src\learner.cc:1115: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective &#39;binary:logistic&#39; was changed from &#39;error&#39; to &#39;logloss&#39;. Explicitly set eval_metric if you&#39;d like to restore the old behavior.
+<pre>time: 0 ns (started: 2021-12-18 18:42:42 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[18:43:15] WARNING: D:\bld\xgboost-split_1637426510059\work\src\learner.cc:1115: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective &#39;binary:logistic&#39; was changed from &#39;error&#39; to &#39;logloss&#39;. Explicitly set eval_metric if you&#39;d like to restore the old behavior.
 </pre>
 </div>
 </div>
@@ -17420,15 +17458,32 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>XGBClassifier(base_score=0.5, booster=&#39;gbtree&#39;, colsample_bylevel=1,
-              colsample_bynode=1, colsample_bytree=1, enable_categorical=False,
-              gamma=0, gpu_id=-1, importance_type=None,
-              interaction_constraints=&#39;&#39;, learning_rate=0.300000012,
-              max_delta_step=0, max_depth=6, min_child_weight=1, missing=nan,
-              monotone_constraints=&#39;()&#39;, n_estimators=100, n_jobs=-1,
-              num_parallel_tree=1, predictor=&#39;auto&#39;, random_state=0,
-              reg_alpha=0, reg_lambda=1, scale_pos_weight=1, subsample=1,
-              tree_method=&#39;exact&#39;, validate_parameters=1, verbosity=None)</pre>
+<pre>Pipeline(steps=[(&#39;preprocesador&#39;,
+                 ColumnTransformer(transformers=[(&#39;num&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(strategy=&#39;median&#39;)),
+                                                                  (&#39;scaler&#39;,
+                                                                   StandardScaler())]),
+                                                  [&#39;vehicle_age&#39;,
+                                                   &#39;passenger_age&#39;,
+                                                   &#39;vehicles_involved&#39;,
+                                                   &#39;year&#39;]),
+                                                 (&#39;fcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=nan,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;onehot&#39;,
+                                                                   OneHotEncoder(handle_unknown=&#39;i...
+                               gamma=0, gpu_id=-1, importance_type=None,
+                               interaction_constraints=&#39;&#39;,
+                               learning_rate=0.300000012, max_delta_step=0,
+                               max_depth=6, min_child_weight=1, missing=nan,
+                               monotone_constraints=&#39;()&#39;, n_estimators=100,
+                               n_jobs=-1, num_parallel_tree=1, predictor=&#39;auto&#39;,
+                               random_state=0, reg_alpha=0, reg_lambda=1,
+                               scale_pos_weight=1, subsample=1,
+                               tree_method=&#39;exact&#39;, validate_parameters=1,
+                               verbosity=None))])</pre>
 </div>
 
 </div>
@@ -17440,7 +17495,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 2min 21s (started: 2021-12-12 22:22:15 +01:00)
+<pre>time: 3min 2s (started: 2021-12-18 18:42:46 +01:00)
 </pre>
 </div>
 </div>
@@ -17476,7 +17531,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 47 ms (started: 2021-12-12 22:24:36 +01:00)
+<pre>time: 31 ms (started: 2021-12-18 18:45:49 +01:00)
 </pre>
 </div>
 </div>
@@ -17512,7 +17567,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 62 ms (started: 2021-12-12 22:59:31 +01:00)
+<pre>time: 16 ms (started: 2021-12-18 18:45:49 +01:00)
 </pre>
 </div>
 </div>
@@ -17555,21 +17610,25 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>ROC-AUC score of the model: 0.8536524588223738
-Accuracy of the model: 0.9846430537622728
+<pre>ROC-AUC score of the model: 0.8541541641828294
+Accuracy of the model: 0.9848714106843199
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       0.98      1.00      0.99    797650
-           1       0.56      0.01      0.02     12472
+           0       0.99      1.00      0.99    799946
+           1       0.50      0.01      0.03     12291
 
-    accuracy                           0.98    810122
-   macro avg       0.77      0.51      0.51    810122
-weighted avg       0.98      0.98      0.98    810122
+    accuracy                           0.98    812237
+   macro avg       0.74      0.51      0.51    812237
+weighted avg       0.98      0.98      0.98    812237
 
 
-time: 2.42 s (started: 2021-12-12 22:59:37 +01:00)
+Confusion matrix: 
+[[799774    172]
+ [ 12116    175]]
+
+time: 8.31 s (started: 2021-12-18 18:45:49 +01:00)
 </pre>
 </div>
 </div>
@@ -17627,22 +17686,26 @@ Procedemos a ajustar el umbral de predicción siguiendo el punto óptimo según 
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Best Threshold=0.014000, G-Mean=0.769
-ROC-AUC score of the model: 0.8536524588223738
-Accuracy of the model: 0.7553183347693311
+<pre>Best Threshold=0.014962, G-Mean=0.770
+ROC-AUC score of the model: 0.8541541641828294
+Accuracy of the model: 0.775515028249144
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       1.00      0.75      0.86    797650
-           1       0.05      0.78      0.09     12472
+           0       1.00      0.78      0.87    799946
+           1       0.05      0.77      0.09     12291
 
-    accuracy                           0.76    810122
-   macro avg       0.52      0.77      0.47    810122
-weighted avg       0.98      0.76      0.85    810122
+    accuracy                           0.78    812237
+   macro avg       0.52      0.77      0.48    812237
+weighted avg       0.98      0.78      0.86    812237
 
 
-time: 1.61 s (started: 2021-12-12 22:59:40 +01:00)
+Confusion matrix: 
+[[620499 179447]
+ [  2888   9403]]
+
+time: 1.58 s (started: 2021-12-18 18:45:57 +01:00)
 </pre>
 </div>
 </div>
@@ -17708,22 +17771,26 @@ time: 1.61 s (started: 2021-12-12 22:59:40 +01:00)
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Best Threshold=0.015716, G-Mean=0.781
-ROC-AUC score of the model: 0.8670101234095356
-Accuracy of the model: 0.78290399470697
+<pre>Best Threshold=0.015049, G-Mean=0.782
+ROC-AUC score of the model: 0.8666278527727284
+Accuracy of the model: 0.7778137210694549
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       1.00      0.78      0.88   3192113
-           1       0.05      0.78      0.10     48375
+           0       1.00      0.78      0.87   3200049
+           1       0.05      0.79      0.10     48896
 
-    accuracy                           0.78   3240488
-   macro avg       0.52      0.78      0.49   3240488
-weighted avg       0.98      0.78      0.86   3240488
+    accuracy                           0.78   3248945
+   macro avg       0.52      0.78      0.48   3248945
+weighted avg       0.98      0.78      0.86   3248945
 
 
-time: 11.5 s (started: 2021-12-12 22:59:55 +01:00)
+Confusion matrix: 
+[[2488656  711393]
+ [  10478   38418]]
+
+time: 34.2 s (started: 2021-12-18 18:45:59 +01:00)
 </pre>
 </div>
 </div>
@@ -17757,8 +17824,11 @@ Sin embargo, el modelo XGBoost tiende al overfitting cuando aumentamos el poder 
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">XGBClassifier</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain_smote</span><span class="p">,</span> <span class="n">ytrain_smote</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;preprocesador&#39;</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;smote&#39;</span><span class="p">,</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">sampling_strategy</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;clasificador&#39;</span><span class="p">,</span> <span class="n">XGBClassifier</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
 </pre></div>
 
      </div>
@@ -17778,7 +17848,42 @@ Sin embargo, el modelo XGBoost tiende al overfitting cuando aumentamos el poder 
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>[22:26:51] WARNING: D:\bld\xgboost-split_1637426510059\work\src\learner.cc:1115: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective &#39;binary:logistic&#39; was changed from &#39;error&#39; to &#39;logloss&#39;. Explicitly set eval_metric if you&#39;d like to restore the old behavior.
+<pre>time: 0 ns (started: 2021-12-18 18:48:14 +01:00)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>[18:49:36] WARNING: D:\bld\xgboost-split_1637426510059\work\src\learner.cc:1115: Starting in XGBoost 1.3.0, the default evaluation metric used with the objective &#39;binary:logistic&#39; was changed from &#39;error&#39; to &#39;logloss&#39;. Explicitly set eval_metric if you&#39;d like to restore the old behavior.
 </pre>
 </div>
 </div>
@@ -17792,15 +17897,32 @@ Sin embargo, el modelo XGBoost tiende al overfitting cuando aumentamos el poder 
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>XGBClassifier(base_score=0.5, booster=&#39;gbtree&#39;, colsample_bylevel=1,
-              colsample_bynode=1, colsample_bytree=1, enable_categorical=False,
-              gamma=0, gpu_id=-1, importance_type=None,
-              interaction_constraints=&#39;&#39;, learning_rate=0.300000012,
-              max_delta_step=0, max_depth=6, min_child_weight=1, missing=nan,
-              monotone_constraints=&#39;()&#39;, n_estimators=100, n_jobs=-1,
-              num_parallel_tree=1, predictor=&#39;auto&#39;, random_state=0,
-              reg_alpha=0, reg_lambda=1, scale_pos_weight=1, subsample=1,
-              tree_method=&#39;approx&#39;, validate_parameters=1, verbosity=None)</pre>
+<pre>Pipeline(steps=[(&#39;preprocesador&#39;,
+                 ColumnTransformer(transformers=[(&#39;num&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(strategy=&#39;median&#39;)),
+                                                                  (&#39;scaler&#39;,
+                                                                   StandardScaler())]),
+                                                  [&#39;vehicle_age&#39;,
+                                                   &#39;passenger_age&#39;,
+                                                   &#39;vehicles_involved&#39;,
+                                                   &#39;year&#39;]),
+                                                 (&#39;fcat&#39;,
+                                                  Pipeline(steps=[(&#39;imputer&#39;,
+                                                                   SimpleImputer(fill_value=nan,
+                                                                                 strategy=&#39;constant&#39;)),
+                                                                  (&#39;onehot&#39;,
+                                                                   OneHotEncoder(handle_unknown=&#39;i...
+                               gamma=0, gpu_id=-1, importance_type=None,
+                               interaction_constraints=&#39;&#39;,
+                               learning_rate=0.300000012, max_delta_step=0,
+                               max_depth=6, min_child_weight=1, missing=nan,
+                               monotone_constraints=&#39;()&#39;, n_estimators=100,
+                               n_jobs=-1, num_parallel_tree=1, predictor=&#39;auto&#39;,
+                               random_state=0, reg_alpha=0, reg_lambda=1,
+                               scale_pos_weight=1, subsample=1,
+                               tree_method=&#39;approx&#39;, validate_parameters=1,
+                               verbosity=None))])</pre>
 </div>
 
 </div>
@@ -17812,7 +17934,7 @@ Sin embargo, el modelo XGBoost tiende al overfitting cuando aumentamos el poder 
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 5min 36s (started: 2021-12-12 22:26:45 +01:00)
+<pre>time: 7min 14s (started: 2021-12-18 18:48:19 +01:00)
 </pre>
 </div>
 </div>
@@ -17848,7 +17970,7 @@ Sin embargo, el modelo XGBoost tiende al overfitting cuando aumentamos el poder 
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 47 ms (started: 2021-12-12 22:32:22 +01:00)
+<pre>time: 63 ms (started: 2021-12-18 18:55:33 +01:00)
 </pre>
 </div>
 </div>
@@ -17884,7 +18006,7 @@ Sin embargo, el modelo XGBoost tiende al overfitting cuando aumentamos el poder 
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>time: 47 ms (started: 2021-12-12 22:32:22 +01:00)
+<pre>time: 31 ms (started: 2021-12-18 18:55:33 +01:00)
 </pre>
 </div>
 </div>
@@ -17921,21 +18043,25 @@ Sin embargo, el modelo XGBoost tiende al overfitting cuando aumentamos el poder 
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>ROC-AUC score of the model: 0.8328945511423933
-Accuracy of the model: 0.9843825991640766
+<pre>ROC-AUC score of the model: 0.8335443595477434
+Accuracy of the model: 0.9847039718702792
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       0.98      1.00      0.99    797650
-           1       0.35      0.02      0.03     12472
+           0       0.99      1.00      0.99    799946
+           1       0.35      0.01      0.02     12291
 
-    accuracy                           0.98    810122
-   macro avg       0.67      0.51      0.51    810122
-weighted avg       0.98      0.98      0.98    810122
+    accuracy                           0.98    812237
+   macro avg       0.67      0.51      0.51    812237
+weighted avg       0.98      0.98      0.98    812237
 
 
-time: 2.26 s (started: 2021-12-12 22:32:22 +01:00)
+Confusion matrix: 
+[[799656    290]
+ [ 12134    157]]
+
+time: 8.98 s (started: 2021-12-18 18:55:33 +01:00)
 </pre>
 </div>
 </div>
@@ -17991,22 +18117,26 @@ time: 2.26 s (started: 2021-12-12 22:32:22 +01:00)
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Best Threshold=0.019542, G-Mean=0.748
-ROC-AUC score of the model: 0.8328945511423933
-Accuracy of the model: 0.7343264347838967
+<pre>Best Threshold=0.022001, G-Mean=0.750
+ROC-AUC score of the model: 0.8335443595477434
+Accuracy of the model: 0.74873589851238
 
 Classification report: 
               precision    recall  f1-score   support
 
-           0       0.99      0.73      0.84    797650
-           1       0.04      0.76      0.08     12472
+           0       0.99      0.75      0.85    799946
+           1       0.04      0.75      0.08     12291
 
-    accuracy                           0.73    810122
-   macro avg       0.52      0.75      0.46    810122
-weighted avg       0.98      0.73      0.83    810122
+    accuracy                           0.75    812237
+   macro avg       0.52      0.75      0.47    812237
+weighted avg       0.98      0.75      0.84    812237
 
 
-time: 1.53 s (started: 2021-12-12 22:32:25 +01:00)
+Confusion matrix: 
+[[598906 201040]
+ [  3046   9245]]
+
+time: 1.66 s (started: 2021-12-18 18:55:42 +01:00)
 </pre>
 </div>
 </div>
